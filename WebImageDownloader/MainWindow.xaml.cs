@@ -20,9 +20,13 @@ namespace WebImageDownloader
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private Model model;
+
         public MainWindow()
         {
             InitializeComponent();
+            model = Model.GetInstance();
         }
     }
 }

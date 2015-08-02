@@ -5,6 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebImageDownloader"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="WindowMain" x:Class="WebImageDownloader.MainWindow"
-        mc:Ignorable="d" Height="350" Width="525" Title="Web Image Downloader">
-    <Grid/>
+        mc:Ignorable="d" Height="350" Width="350" Title="Web Image Downloader" ResizeMode="CanResizeWithGrip" MinWidth="350" MinHeight="350">
+    <Grid>
+        <Label x:Name="label" Content="URL:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,13,0,0" ToolTip="URL of page to save"/>
+        <TextBox x:Name="URLTextBox" Height="23" Margin="60,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="Output:" HorizontalAlignment="Left" Margin="5,41,0,0" VerticalAlignment="Top" ToolTip="Where downloaded pages will be saved"/>
+        <TextBox x:Name="OutputTextBox" Height="23" Margin="60,44,41,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button x:Name="BrowseButton" Content="..." HorizontalAlignment="Right" Margin="0,44,10,0" VerticalAlignment="Top" Width="26" Height="23" ToolTip="Select default output directory"/>
+        <Button x:Name="OpenButton" Content="Open" HorizontalAlignment="Right" Margin="0,72,10,0" VerticalAlignment="Top" Width="75" ToolTip="Open output directory in explorer"/>
+        <TabControl x:Name="tabControl" Margin="0,93,0,0.143">
+            <TabItem Header="Filter">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid Background="White">
+                    <GroupBox x:Name="ViewGroup" Header="View" Margin="10,10,165.714,10">
+                        <Grid Margin="0">
+                            <Slider x:Name="slider" Margin="64,35,10.429,0" VerticalAlignment="Top" Height="21" Minimum="30" Maximum="100" LargeChange="10" SmallChange="1" TickPlacement="BottomRight" TickFrequency="10" AutoToolTipPlacement="BottomRight" Value="100"/>
+                            <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                            <Label x:Name="label2" Content="Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,30,0,0"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>
