@@ -45,7 +45,6 @@ namespace WebImageDownloader
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            SaveSettings();
             Close();
         }
 
