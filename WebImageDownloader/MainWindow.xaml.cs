@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,11 +25,16 @@ namespace WebImageDownloader
     {
 
         private Model model;
+        private SolidColorBrush errorTextBackground;
+        private SolidColorBrush correctTextBackground;
+        private Uri uriToDownload = null;
 
         public MainWindow()
         {
             InitializeComponent();
             model = Model.GetInstance();
+            errorTextBackground = new SolidColorBrush(Color.FromArgb(0x80, 0xFF, 0, 0));
+            correctTextBackground = Brushes.White;
             LoadSettings();
         }
 
@@ -46,6 +52,7 @@ namespace WebImageDownloader
             }
 
             BaseOutputTextBox.Text = Properties.Settings.Default.BaseDirectory;
+            SavedOutputTextBox.Text = BaseOutputTextBox.Text;
             Topmost = Properties.Settings.Default.TopMost;
             OpacitySlider.Value = Properties.Settings.Default.WindowOpacity;
         }
@@ -100,6 +107,60 @@ namespace WebImageDownloader
             {
                 BaseOutputTextBox.Text = Properties.Settings.Default.BaseDirectory;
             }
+        }
+
+        private void URLTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Uri uri;
+            if (Uri.TryCreate(URLTextBox.Text, UriKind.Absolute, out uri))
+            {
+                URLTextBox.Background = correctTextBackground;
+                uriToDownload = uri;
+                StartDownloadButton.IsEnabled = true;
+                UpdateOutputLabel();
+            }
+            else if (URLTextBox.Text.Trim() == "")
+            {
+                URLTextBox.Background = correctTextBackground;
+                uriToDownload = null;
+                StartDownloadButton.IsEnabled = true;
+                UpdateOutputLabel();
+            }
+            else
+            {
+                URLTextBox.Background = errorTextBackground;
+                uriToDownload = null;
+                StartDownloadButton.IsEnabled = false;
+            }
+        }
+
+        private void UpdateOutputLabel()
+        {
+            var baseDir = Properties.Settings.Default.BaseDirectory;
+            if (URLTextBox.Text.Trim() != "" && uriToDownload.Segments.Length > 0)
+            {
+                var pageName = uriToDownload.Segments[uriToDownload.Segments.Length - 1];
+                if (pageName == @"/")
+                {
+                    pageName = uriToDownload.Host;
+                }
+                SavedOutputTextBox.Text = baseDir + @"\" + pageName;
+            }
+            else
+            {
+                SavedOutputTextBox.Text = baseDir;
+            }
+        }
+
+        private void OpenButton_Click(object sender, RoutedEventArgs e)
+        {
+            var path = SavedOutputTextBox.Text;
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            Process.Start(path);
         }
     }
 }
