@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebImageDownloader"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="WindowMain" x:Class="WebImageDownloader.MainWindow"
-        mc:Ignorable="d" Height="350" Width="350" Title="Web Image Downloader" ResizeMode="NoResize" MinWidth="350" MinHeight="350" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="WindowMain_MouseLeftButtonDown" Opacity="{Binding Value, ElementName=OpacitySlider}" Background="White" BorderThickness="1" BorderBrush="Black">
+        mc:Ignorable="d" Height="350" Width="350" Title="Web Image Downloader" ResizeMode="NoResize" MinWidth="350" MinHeight="350" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="WindowMain_MouseLeftButtonDown" Opacity="{Binding Value, ElementName=OpacitySlider}" Background="White" BorderThickness="1" BorderBrush="Black" Closing="WindowMain_Closing">
     <Grid>
         <Button x:Name="CloseButton" Content="r" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" BorderBrush="{x:Null}" Height="30" FontSize="16" ToolTip="Close" FontFamily="Webdings" Click="CloseButton_Click" BorderThickness="0">
             <Button.Style>
@@ -45,13 +45,14 @@
                 <Grid Background="White">
                     <GroupBox x:Name="ViewGroup" Header="View" Margin="10,10,165.714,10">
                         <Grid Margin="0">
-                            <Slider x:Name="OpacitySlider" Margin="64,35,10.429,0" VerticalAlignment="Top" Height="21" Minimum="0.3" Maximum="1" LargeChange="0.1" SmallChange="0.05" TickPlacement="BottomRight" TickFrequency="10" AutoToolTipPlacement="BottomRight" ValueChanged="OpacitySlider_ValueChanged" Value="1" AutoToolTipPrecision="2"/>
-                            <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="AlwaysOnTopCheck_Changed" Unchecked="AlwaysOnTopCheck_Changed" IsChecked="{Binding Topmost, ElementName=WindowMain}"/>
+                            <Slider x:Name="OpacitySlider" Margin="64,35,10.429,0" VerticalAlignment="Top" Height="21" Minimum="0.3" Maximum="1" LargeChange="0.1" SmallChange="0.05" TickPlacement="BottomRight" TickFrequency="10" AutoToolTipPlacement="BottomRight" Value="1" AutoToolTipPrecision="2"/>
+                            <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" IsChecked="{Binding Topmost, ElementName=WindowMain}"/>
                             <Label x:Name="label2" Content="Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,30,0,0"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
         </TabControl>
+        <Label x:Name="label3" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Width="267" Content="Web Image Downloader" FontSize="14.667"/>
     </Grid>
 </Window>
