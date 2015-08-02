@@ -32,11 +32,11 @@
         </Button>
         <Button x:Name="MinimizeButton" Content="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" Background="{x:Null}" BorderBrush="{x:Null}" Height="30" FontSize="16" ToolTip="Minimize" FontFamily="Webdings" Foreground="Gray" Margin="0,0,35,0" Click="MinimizeButton_Click" BorderThickness="0"/>
         <Label x:Name="label" Content="URL:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,34,0,0" ToolTip="URL of page to save"/>
-        <TextBox x:Name="URLTextBox" Height="23" Margin="60,34,9.714,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="URLTextBox" Height="23" Margin="60,34,9.714,0" VerticalAlignment="Top" MaxLines="1"/>
         <Label x:Name="label1" Content="Output:" HorizontalAlignment="Left" Margin="5,62,0,0" VerticalAlignment="Top" ToolTip="Where downloaded pages will be saved"/>
-        <TextBox x:Name="OutputTextBox" Height="23" Margin="60,65,40.714,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button x:Name="BrowseButton" Content="..." HorizontalAlignment="Right" Margin="0,65,9.714,0" VerticalAlignment="Top" Width="26" Height="23" ToolTip="Select default output directory"/>
-        <Button x:Name="OpenButton" Content="Open" HorizontalAlignment="Right" Margin="0,93,9.714,0" VerticalAlignment="Top" Width="75" ToolTip="Open output directory in explorer"/>
+        <TextBox x:Name="OutputTextBox" Height="23" Margin="60,65,97.429,0" VerticalAlignment="Top" MaxLines="1"/>
+        <Button x:Name="BrowseButton" Content="..." HorizontalAlignment="Right" Margin="0,65,66.429,0" VerticalAlignment="Top" Width="26" Height="23" ToolTip="Select default output directory"/>
+        <Button x:Name="OpenButton" Content="Open" HorizontalAlignment="Right" Margin="0,65,10.429,0" VerticalAlignment="Top" Width="51" ToolTip="Open output directory in explorer" Height="23"/>
         <TabControl x:Name="tabControl" Margin="0,119,-0.286,-0.286">
             <TabItem Header="Filter">
                 <Grid Background="#FFE5E5E5"/>
@@ -47,12 +47,13 @@
                         <Grid Margin="0">
                             <Slider x:Name="OpacitySlider" Margin="64,35,10.429,0" VerticalAlignment="Top" Height="21" Minimum="0.3" Maximum="1" LargeChange="0.1" SmallChange="0.05" TickPlacement="BottomRight" TickFrequency="10" AutoToolTipPlacement="BottomRight" Value="1" AutoToolTipPrecision="2"/>
                             <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" IsChecked="{Binding Topmost, ElementName=WindowMain}"/>
-                            <Label x:Name="label2" Content="Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,30,0,0"/>
+                            <Label x:Name="label2" Content="Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,30,0,0" ToolTip="Change the window opacity"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
         </TabControl>
         <Label x:Name="label3" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Width="267" Content="Web Image Downloader" FontSize="14.667"/>
+        <Button x:Name="button" Content="Start Download" HorizontalAlignment="Left" Margin="224,97,0,0" VerticalAlignment="Top" Width="113" Height="34" ToolTip="Start downloading from URL"/>
     </Grid>
 </Window>
