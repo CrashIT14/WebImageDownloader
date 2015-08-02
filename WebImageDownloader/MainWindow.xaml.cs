@@ -45,5 +45,20 @@ namespace WebImageDownloader
             Properties.Settings.Default.TopMost = (bool) AlwaysOnTopCheck.IsChecked;
             Properties.Settings.Default.Save();
         }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void WindowMain_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }
