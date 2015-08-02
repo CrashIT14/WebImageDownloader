@@ -63,5 +63,10 @@ namespace WebImageDownloader
         {
             SaveSettings();
         }
+
+        private void SavedOutputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SavedOutputTextBox.ScrollToEnd();
+        }
     }
 }
