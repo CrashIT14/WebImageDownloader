@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebImageDownloader"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="WindowMain" x:Class="WebImageDownloader.MainWindow"
-        mc:Ignorable="d" Height="350" Width="350" Title="Web Image Downloader" ResizeMode="NoResize" MinWidth="350" MinHeight="350" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="WindowMain_MouseLeftButtonDown" Opacity="{Binding Value, ElementName=OpacitySlider}" Background="White" BorderThickness="1" BorderBrush="Black" Closing="WindowMain_Closing">
+        mc:Ignorable="d" Height="382" Width="350" Title="Web Image Downloader" ResizeMode="NoResize" MinWidth="350" MinHeight="350" AllowsTransparency="True" WindowStyle="None" MouseLeftButtonDown="WindowMain_MouseLeftButtonDown" Opacity="{Binding Value, ElementName=OpacitySlider}" Background="White" BorderThickness="1" BorderBrush="Black" Closing="WindowMain_Closing">
     <Grid>
         <Button x:Name="CloseButton" Content="r" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" BorderBrush="{x:Null}" Height="30" FontSize="16" ToolTip="Close" FontFamily="Webdings" Click="CloseButton_Click" BorderThickness="0">
             <Button.Style>
@@ -35,21 +35,21 @@
         <TextBox x:Name="URLTextBox" Height="23" Margin="65,34,9.429,0" VerticalAlignment="Top" MaxLines="1"/>
         <Label x:Name="OutputLabel" Content="Output:" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top" ToolTip="Where downloaded pages will be saved"/>
         <Button x:Name="OpenButton" Content="Open" HorizontalAlignment="Right" Margin="0,65,10.429,0" VerticalAlignment="Top" Width="51" ToolTip="Open output directory in explorer" Height="23"/>
-        <TabControl x:Name="tabControl" Margin="0,119,-0.286,-0.286">
+        <TabControl x:Name="tabControl" Margin="0,119,-0.571,45.429">
             <TabItem x:Name="FilterTab" Header="Filter">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem x:Name="SettingsTab" Header="Settings">
-                <Grid Background="White">
-                    <GroupBox x:Name="ViewGroup" Header="View" Margin="10,10,165.286,108.571">
+                <Grid Background="White" Margin="0,0,0.286,-15.143">
+                    <GroupBox x:Name="ViewGroup" Header="View" Margin="10,10,166,102">
                         <Grid Margin="0">
                             <Slider x:Name="OpacitySlider" Margin="64,35,10.429,0" VerticalAlignment="Top" Height="21" Minimum="0.3" Maximum="1" LargeChange="0.1" SmallChange="0.05" TickPlacement="BottomRight" TickFrequency="10" AutoToolTipPlacement="BottomRight" Value="1" AutoToolTipPrecision="2" VerticalContentAlignment="Bottom"/>
                             <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" IsChecked="{Binding Topmost, ElementName=WindowMain}"/>
                             <Label x:Name="OpacityLabel" Content="Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,30,0,0" ToolTip="Change the window opacity" VerticalContentAlignment="Bottom"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="MiscGroup" Header="Misc. Settings" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="94">
-                        <Grid Margin="0">
+                    <GroupBox x:Name="MiscGroup" Header="Misc. Settings" Margin="10,0,10,21" VerticalAlignment="Bottom" Height="76">
+                        <Grid Margin="0,0,0.143,-12.857">
                             <Label x:Name="BaseOutputLabel" Content="Base Output:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" ToolTip="Base directory where folders will be created"/>
                             <TextBox x:Name="BaseOutputTextBox" Height="23" Margin="93,10,40.857,0" VerticalAlignment="Top" MaxLines="1"/>
                             <Button x:Name="BrowseButton" Content="..." HorizontalAlignment="Right" Margin="0,10,9.857,0" VerticalAlignment="Top" Width="26" Height="23" ToolTip="Select default output directory"/>
@@ -60,6 +60,7 @@
         </TabControl>
         <Label x:Name="WindowTitleLabel" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Width="267" Content="Web Image Downloader" FontSize="14.667"/>
         <Button x:Name="StartDownloadButton" Content="Start Download" HorizontalAlignment="Left" Margin="224,97,0,0" VerticalAlignment="Top" Width="113" Height="34" ToolTip="Start downloading from URL"/>
-        <TextBox x:Name="SavedOutputTextBox" Height="23" Margin="65,65,66.429,0" VerticalAlignment="Top" MaxLines="1" Text="C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" IsReadOnly="True" BorderBrush="{x:Null}" TextChanged="SavedOutputTextBox_TextChanged"/>
+        <TextBox x:Name="SavedOutputTextBox" Height="23" Margin="65,65,66.429,0" VerticalAlignment="Top" MaxLines="1" Text="C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" IsReadOnly="True" BorderBrush="{x:Null}"/>
+        <ProgressBar x:Name="MainProgressBar" HorizontalAlignment="Left" Height="22" Margin="10,347,0,0" VerticalAlignment="Top" Width="327"/>
     </Grid>
 </Window>
