@@ -59,7 +59,7 @@
             </TabItem>
         </TabControl>
         <Label x:Name="WindowTitleLabel" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Width="267" Content="Web Image Downloader" FontSize="14.667"/>
-        <Button x:Name="StartDownloadButton" Content="Start Download" HorizontalAlignment="Left" Margin="224,97,0,0" VerticalAlignment="Top" Width="113" Height="34" ToolTip="Start downloading from URL"/>
+        <Button x:Name="StartDownloadButton" Content="Start Download" HorizontalAlignment="Left" Margin="224,97,0,0" VerticalAlignment="Top" Width="113" Height="34" ToolTip="Start downloading from URL" Click="StartDownloadButton_Click"/>
         <TextBox x:Name="SavedOutputTextBox" Height="23" Margin="65,65,66.429,0" VerticalAlignment="Top" MaxLines="1" Text="C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" IsReadOnly="True" BorderBrush="{x:Null}"/>
         <ProgressBar x:Name="MainProgressBar" HorizontalAlignment="Left" Height="22" Margin="10,347,0,0" VerticalAlignment="Top" Width="327"/>
     </Grid>

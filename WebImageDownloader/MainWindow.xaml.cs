@@ -162,5 +162,17 @@ namespace WebImageDownloader
 
             Process.Start(path);
         }
+
+        private void StartDownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (URLTextBox.Text.Trim() == "")
+            {
+                MessageBox.Show("You must specify an URL", "No URL", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                model.DownloadUrl(SavedOutputTextBox.Text);
+            }
+        }
     }
 }
