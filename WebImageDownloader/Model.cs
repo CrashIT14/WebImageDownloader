@@ -8,7 +8,7 @@ namespace WebImageDownloader
 {
     class Model
     {
-        private static Model instance = null;
+        private static Model _instance = null;
 
         private Model()
         {
@@ -17,12 +17,14 @@ namespace WebImageDownloader
 
         public static Model GetInstance()
         {
-            if (instance == null)
-            {
-                instance = new Model();
-            }
+            return _instance ?? (_instance = new Model());
+        }
 
-            return instance;
+        public void DownloadUrl(string url)
+        {
+            var uri = new Uri(url);
+            // Get the name to use when creating directory for this page
+            var name = uri.Segments[uri.Segments.Length - 1];
         }
     }
 }
