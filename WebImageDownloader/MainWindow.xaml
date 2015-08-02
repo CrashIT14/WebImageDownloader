@@ -21,8 +21,8 @@
                 <Grid Background="White">
                     <GroupBox x:Name="ViewGroup" Header="View" Margin="10,10,165.714,10">
                         <Grid Margin="0">
-                            <Slider x:Name="slider" Margin="64,35,10.429,0" VerticalAlignment="Top" Height="21" Minimum="30" Maximum="100" LargeChange="10" SmallChange="1" TickPlacement="BottomRight" TickFrequency="10" AutoToolTipPlacement="BottomRight" Value="100"/>
-                            <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                            <Slider x:Name="OpacitySlider" Margin="64,35,10.429,0" VerticalAlignment="Top" Height="21" Minimum="30" Maximum="100" LargeChange="10" SmallChange="1" TickPlacement="BottomRight" TickFrequency="10" AutoToolTipPlacement="BottomRight" Value="100" ValueChanged="OpacitySlider_ValueChanged" IsEnabled="False"/>
+                            <CheckBox x:Name="AlwaysOnTopCheck" Content="Always on top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="AlwaysOnTopCheck_Changed" Unchecked="AlwaysOnTopCheck_Changed" IsChecked="{Binding Topmost, ElementName=WindowMain}"/>
                             <Label x:Name="label2" Content="Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,30,0,0"/>
                         </Grid>
                     </GroupBox>

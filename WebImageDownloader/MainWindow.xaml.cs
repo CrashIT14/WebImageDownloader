@@ -27,6 +27,23 @@ namespace WebImageDownloader
         {
             InitializeComponent();
             model = Model.GetInstance();
+            loadSettings();
+        }
+
+        private void loadSettings()
+        {
+            this.Topmost = Properties.Settings.Default.TopMost;
+        }
+
+        private void OpacitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            // TODO: Fix opacity support
+        }
+
+        private void AlwaysOnTopCheck_Changed(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.TopMost = (bool) AlwaysOnTopCheck.IsChecked;
+            Properties.Settings.Default.Save();
         }
     }
 }
