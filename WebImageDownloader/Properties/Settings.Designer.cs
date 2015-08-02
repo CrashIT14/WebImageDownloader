@@ -46,5 +46,29 @@ namespace WebImageDownloader.Properties {
                 this["WindowOpacity"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BaseDirectory {
+            get {
+                return ((string)(this["BaseDirectory"]));
+            }
+            set {
+                this["BaseDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BaseDirectoryChanged {
+            get {
+                return ((bool)(this["BaseDirectoryChanged"]));
+            }
+            set {
+                this["BaseDirectoryChanged"] = value;
+            }
+        }
     }
 }
