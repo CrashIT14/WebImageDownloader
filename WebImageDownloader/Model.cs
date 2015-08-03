@@ -15,8 +15,13 @@ namespace WebImageDownloader
     class Model
     {
         private static Model _instance = null;
-        private const string HTML_CLASS = "class";
-        private const string HTML_ID = "id";
+
+        // HTML Agility Pack uses "//" for some reason
+        private const string HtmlAgilityImg = "//img";
+        private const string HtmlAgilityLink = "//a";
+
+        private const string HtmlClass = "class";
+        private const string HtmlId = "id";
 
         private Model()
         {
@@ -35,9 +40,8 @@ namespace WebImageDownloader
             var webSource = await Task.Run(() => client.DownloadString(uri));
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(webSource);
-            var collection = htmlDoc.DocumentNode.SelectNodes("//img");
             List<string> targets = new List<string>();
-            foreach (var link in collection)
+            foreach (var link in GetImgNodes(htmlDoc))
             {
                 targets.Add(link.GetAttributeValue("src", ""));
             }
@@ -57,7 +61,20 @@ namespace WebImageDownloader
                 new WebClient().DownloadFileAsync(targetUri,
                     localPath + @"\" + targetUri.Segments[targetUri.Segments.Length - 1]);
             }
-            
+        }
+
+        private HtmlNodeCollection GetImgNodes(HtmlDocument document)
+        {
+            var collection = document.DocumentNode.SelectNodes(HtmlAgilityImg);
+
+            return collection ?? (collection = new HtmlNodeCollection(null));
+        }
+
+        private HtmlNodeCollection GetLinkNodes(HtmlDocument document)
+        {
+            var collection = document.DocumentNode.SelectNodes(HtmlAgilityLink);
+
+            return collection ?? (collection = new HtmlNodeCollection(null));
         }
     }
 }
