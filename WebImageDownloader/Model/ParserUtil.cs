@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
-namespace WebImageDownloader
+namespace WebImageDownloader.Model
 {
     class ParserUtil
     {

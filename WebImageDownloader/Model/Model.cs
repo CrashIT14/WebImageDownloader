@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using HtmlAgilityPack;
 
-namespace WebImageDownloader
+namespace WebImageDownloader.Model
 {
     class Model
     {
