@@ -15,6 +15,8 @@ namespace WebImageDownloader
     class Model
     {
         private static Model _instance = null;
+        private const string HTML_CLASS = "class";
+        private const string HTML_ID = "id";
 
         private Model()
         {
@@ -37,7 +39,7 @@ namespace WebImageDownloader
             List<string> targets = new List<string>();
             foreach (var link in collection)
             {
-                targets.Add(link.Attributes["src"].Value);
+                targets.Add(link.GetAttributeValue("src", ""));
             }
 
             foreach (var link in targets)
