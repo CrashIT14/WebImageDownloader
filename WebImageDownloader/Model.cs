@@ -21,13 +21,10 @@ namespace WebImageDownloader
             return _instance ?? (_instance = new Model());
         }
 
-        public void DownloadUrl(string url)
+        public void DownloadUrl(string url, string localPath)
         {
             var uri = new Uri(url);
-            if (!Directory.Exists(url))
-            {
-                Directory.CreateDirectory(url);
-            }
+            
         }
     }
 }

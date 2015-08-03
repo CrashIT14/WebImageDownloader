@@ -171,7 +171,12 @@ namespace WebImageDownloader
             }
             else
             {
-                model.DownloadUrl(SavedOutputTextBox.Text);
+                var localPath = SavedOutputTextBox.Text;
+                if (!Directory.Exists(localPath))
+                {
+                    Directory.CreateDirectory(localPath);
+                }
+                model.DownloadUrl(URLTextBox.Text, localPath);
             }
         }
     }
