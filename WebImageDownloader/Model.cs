@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using HtmlAgilityPack;
 
 namespace WebImageDownloader
 {
@@ -21,9 +26,35 @@ namespace WebImageDownloader
             return _instance ?? (_instance = new Model());
         }
 
-        public void DownloadUrl(string url, string localPath)
+        public async void DownloadUrl(string url, string localPath)
         {
             var uri = new Uri(url);
+            var client = new WebClient();
+            var webSource = await Task.Run(() => client.DownloadString(uri));
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(webSource);
+            var collection = htmlDoc.DocumentNode.SelectNodes("//img");
+            List<string> targets = new List<string>();
+            foreach (var link in collection)
+            {
+                targets.Add(link.Attributes["src"].Value);
+            }
+
+            foreach (var link in targets)
+            {
+                var formattedLink = link;
+                if (link.StartsWith("//"))
+                {
+                    formattedLink = link.Replace("//", "http://");
+                }
+                var targetUri = new Uri(formattedLink);
+                if (!targetUri.IsAbsoluteUri)
+                {
+                    targetUri = new Uri(url + "/" + link);
+                }
+                new WebClient().DownloadFileAsync(targetUri,
+                    localPath + @"\" + targetUri.Segments[targetUri.Segments.Length - 1]);
+            }
             
         }
     }
