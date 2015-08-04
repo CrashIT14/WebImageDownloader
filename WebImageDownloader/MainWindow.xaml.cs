@@ -27,8 +27,7 @@ namespace WebImageDownloader
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        private Model.Model model;
+        
         private readonly SolidColorBrush _errorTextBackground;
         private readonly SolidColorBrush _correctTextBackground;
         private Uri uriToDownload = null;
@@ -37,7 +36,6 @@ namespace WebImageDownloader
         public MainWindow()
         {
             InitializeComponent();
-            model = Model.Model.GetInstance();
             _errorTextBackground = 
             _correctTextBackground = Brushes.White;
 
