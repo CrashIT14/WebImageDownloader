@@ -76,5 +76,38 @@ namespace WebImageDownloader.Model
                     return "";
             }
         }
+
+        public static Uri GetUriFromTargetString(string target, string baseUrl)
+        {
+            var formattedLink = target;
+            if (target.StartsWith("//"))
+            {
+                formattedLink = target.Replace("//", "http://");
+            }
+            var targetUri = new Uri(formattedLink);
+            if (!targetUri.IsAbsoluteUri)
+            {
+                targetUri = new Uri(baseUrl + "/" + target);
+            }
+            return targetUri;
+        }
+
+        public static string GetFileNameFromUri(Uri uri)
+        {
+            string result;
+            if (uri.Segments.Length > 0)
+            {
+                result = uri.Segments[uri.Segments.Length - 1];
+                if (result == @"/")
+                {
+                    result = uri.Host;
+                }
+            }
+            else
+            {
+                result = uri.Host;
+            }
+            return result;
+        }
     }
 }

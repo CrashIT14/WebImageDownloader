@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,7 +16,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HtmlAgilityPack;
 using Microsoft.Win32;
+using WebImageDownloader.Model;
 
 namespace WebImageDownloader
 {
@@ -25,17 +29,31 @@ namespace WebImageDownloader
     {
 
         private Model.Model model;
-        private SolidColorBrush errorTextBackground;
-        private SolidColorBrush correctTextBackground;
+        private readonly SolidColorBrush _errorTextBackground;
+        private readonly SolidColorBrush _correctTextBackground;
         private Uri uriToDownload = null;
+        private BackgroundWorker backgroundWorker;
 
         public MainWindow()
         {
             InitializeComponent();
             model = Model.Model.GetInstance();
-            errorTextBackground = new SolidColorBrush(Color.FromArgb(0x80, 0xFF, 0, 0));
-            correctTextBackground = Brushes.White;
+            _errorTextBackground = 
+            _correctTextBackground = Brushes.White;
+
+            backgroundWorker = new BackgroundWorker();
+            SetupBackgroundWorker(backgroundWorker);
+
             LoadSettings();
+        }
+
+        private void SetupBackgroundWorker(BackgroundWorker bw)
+        {
+            bw.WorkerReportsProgress = true;
+            bw.WorkerSupportsCancellation = true;
+            bw.DoWork += bw_DoWork;
+            bw.ProgressChanged += bw_ProgressChanged;
+            bw.RunWorkerCompleted += bw_RunWorkerCompleted;
         }
 
         private void LoadSettings()
@@ -114,21 +132,21 @@ namespace WebImageDownloader
             Uri uri;
             if (Uri.TryCreate(URLTextBox.Text, UriKind.Absolute, out uri))
             {
-                URLTextBox.Background = correctTextBackground;
+                URLTextBox.Background = _correctTextBackground;
                 uriToDownload = uri;
                 StartDownloadButton.IsEnabled = true;
                 UpdateOutputLabel();
             }
             else if (URLTextBox.Text.Trim() == "")
             {
-                URLTextBox.Background = correctTextBackground;
+                URLTextBox.Background = _correctTextBackground;
                 uriToDownload = null;
                 StartDownloadButton.IsEnabled = true;
                 UpdateOutputLabel();
             }
             else
             {
-                URLTextBox.Background = errorTextBackground;
+                URLTextBox.Background = _errorTextBackground;
                 uriToDownload = null;
                 StartDownloadButton.IsEnabled = false;
             }
@@ -169,15 +187,86 @@ namespace WebImageDownloader
             {
                 MessageBox.Show("You must specify an URL", "No URL", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else
+            else if (!backgroundWorker.IsBusy)
             {
-                var localPath = SavedOutputTextBox.Text;
-                if (!Directory.Exists(localPath))
-                {
-                    Directory.CreateDirectory(localPath);
-                }
-                model.DownloadUrl(URLTextBox.Text, localPath);
+                backgroundWorker.RunWorkerAsync(new WorkerArgument(SavedOutputTextBox.Text, URLTextBox.Text));
             }
         }
+
+        private void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            worker.ReportProgress(0);
+            var argument = (WorkerArgument) e.Argument;
+
+            var localPath = argument.LocalPath;
+            var url = argument.Url;
+            if (!Directory.Exists(localPath))
+            {
+                Directory.CreateDirectory(localPath);
+            }
+
+            var uri = new Uri(url);
+            var client = new WebClient();
+            var webSource = client.DownloadString(uri);
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(webSource);
+
+            List<string> targets = ParserUtil.GetTargetsFromFilters(htmlDoc, new NodeFilter(NodeType.Link, "", "fileThumb")); // TODO: get filters
+
+            int max = targets.Count;
+            int current = 0;
+
+            WebClient webClient = new WebClient();
+            foreach (string target in targets)
+            {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+                else
+                {
+                    var targetUri = ParserUtil.GetUriFromTargetString(target, url);
+                    webClient.DownloadFile(targetUri, localPath + @"\" + ParserUtil.GetFileNameFromUri(targetUri));
+                    current ++;
+                    worker.ReportProgress((int) ((float) current/max));
+                }
+            }
+            worker.ReportProgress(100);
+        }
+
+        private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if ((e.Cancelled == true))
+            {
+                // canceled
+            }
+
+            else if (!(e.Error == null))
+            {
+                // error
+            }
+
+            else
+            {
+                // done
+            }
+        }
+
+        private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            int percent = e.ProgressPercentage;
+            if (percent == 0)
+            {
+                MainProgressBar.IsIndeterminate = true;
+            }
+            else
+            {
+                MainProgressBar.IsIndeterminate = false;
+                MainProgressBar.Value = e.ProgressPercentage;
+            }
+        }
+
     }
 }

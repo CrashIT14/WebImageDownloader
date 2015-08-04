@@ -81,6 +81,7 @@
     <Compile Include="Model\Model.cs" />
     <Compile Include="Model\NodeFilter.cs" />
     <Compile Include="Model\ParserUtil.cs" />
+    <Compile Include="Model\WorkerArgument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
