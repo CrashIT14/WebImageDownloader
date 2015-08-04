@@ -216,6 +216,7 @@ namespace WebImageDownloader
 
             int max = targets.Count;
             int current = 0;
+            int completed = 0;
 
             WebClient webClient = new WebClient();
             foreach (string target in targets)
@@ -229,28 +230,32 @@ namespace WebImageDownloader
                 {
                     var targetUri = ParserUtil.GetUriFromTargetString(target, url);
                     webClient.DownloadFile(targetUri, localPath + @"\" + ParserUtil.GetFileNameFromUri(targetUri));
-                    current ++;
+                    current++; // TODO: Add error handling
+                    completed++;
                     worker.ReportProgress((int) ((float) current/max));
                 }
             }
             worker.ReportProgress(100);
+            e.Result = new WorkerResult(completed, max, localPath);
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if ((e.Cancelled == true))
             {
-                // canceled
+                MainProgressBar.Value = 0;
             }
 
-            else if (!(e.Error == null))
+            else if (e.Error != null)
             {
-                // error
+                MessageBox.Show(e.Error.Message, "An error occured", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             else
             {
-                // done
+                WorkerResult result = (WorkerResult) e.Result;
+                MessageBox.Show("Downloaded " + result.Downloaded + "/" + result.Total + " filed to: " +
+                                result.LocalPath);
             }
         }
 
