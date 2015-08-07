@@ -224,14 +224,16 @@ namespace WebImageDownloader
                     e.Cancel = true;
                     break;
                 }
-                else
+
+                var targetUri = ParserUtil.GetUriFromTargetString(target, url);
+                string filePath = localPath + @"\" + ParserUtil.GetFileNameFromUri(targetUri);
+                if (!File.Exists(filePath))
                 {
-                    var targetUri = ParserUtil.GetUriFromTargetString(target, url);
-                    webClient.DownloadFile(targetUri, localPath + @"\" + ParserUtil.GetFileNameFromUri(targetUri));
-                    current++; // TODO: Add error handling
-                    completed++;
-                    worker.ReportProgress((int)(((float)current / max) * 100));
+                    webClient.DownloadFile(targetUri, filePath);
                 }
+                current++; // TODO: Add error handling
+                completed++;
+                worker.ReportProgress((int)(((float)current / max) * 100));
             }
             worker.ReportProgress(100);
             e.Result = new WorkerResult(completed, max, localPath);
