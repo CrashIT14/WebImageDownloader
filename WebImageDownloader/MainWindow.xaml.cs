@@ -230,7 +230,7 @@ namespace WebImageDownloader
                     webClient.DownloadFile(targetUri, localPath + @"\" + ParserUtil.GetFileNameFromUri(targetUri));
                     current++; // TODO: Add error handling
                     completed++;
-                    worker.ReportProgress((int) ((float) current/max));
+                    worker.ReportProgress((int)(((float)current / max) * 100));
                 }
             }
             worker.ReportProgress(100);
