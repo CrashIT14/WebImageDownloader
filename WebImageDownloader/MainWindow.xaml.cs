@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlAgilityPack;
 using Microsoft.Win32;
+using Se.Creotec.WPFToastMessage;
 using WebImageDownloader.Model;
 
 namespace WebImageDownloader
@@ -254,8 +255,8 @@ namespace WebImageDownloader
             else
             {
                 WorkerResult result = (WorkerResult) e.Result;
-                MessageBox.Show("Downloaded " + result.Downloaded + "/" + result.Total + " filed to: " +
-                                result.LocalPath);
+                ToastMessage.Show("Downloaded " + result.Downloaded + " / " + result.Total + " to:\n" + result.LocalPath,
+                    "Download complete", 5, ToastMessage.Position.BOTTOM_RIGHT);
             }
         }
 
