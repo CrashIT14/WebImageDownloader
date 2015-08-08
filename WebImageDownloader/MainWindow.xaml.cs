@@ -31,8 +31,8 @@ namespace WebImageDownloader
         
         private readonly SolidColorBrush _errorTextBackground;
         private readonly SolidColorBrush _correctTextBackground;
-        private Uri uriToDownload = null;
-        private BackgroundWorker backgroundWorker;
+        private Uri uriToDownload;
+        private readonly BackgroundWorker _backgroundWorker;
 
         public MainWindow()
         {
@@ -40,8 +40,8 @@ namespace WebImageDownloader
             _errorTextBackground = 
             _correctTextBackground = Brushes.White;
 
-            backgroundWorker = new BackgroundWorker();
-            SetupBackgroundWorker(backgroundWorker);
+            _backgroundWorker = new BackgroundWorker();
+            SetupBackgroundWorker(_backgroundWorker);
 
             LoadSettings();
         }
@@ -186,9 +186,9 @@ namespace WebImageDownloader
             {
                 MessageBox.Show("You must specify an URL", "No URL", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else if (!backgroundWorker.IsBusy)
+            else if (!_backgroundWorker.IsBusy)
             {
-                backgroundWorker.RunWorkerAsync(new WorkerArgument(SavedOutputTextBox.Text, URLTextBox.Text));
+                _backgroundWorker.RunWorkerAsync(new WorkerArgument(SavedOutputTextBox.Text, URLTextBox.Text));
             }
         }
 
@@ -242,7 +242,7 @@ namespace WebImageDownloader
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if ((e.Cancelled == true))
+            if (e.Cancelled)
             {
                 MainProgressBar.Value = 0;
             }
@@ -254,9 +254,10 @@ namespace WebImageDownloader
 
             else
             {
-                WorkerResult result = (WorkerResult) e.Result;
-                ToastMessage.Show("Downloaded " + result.Downloaded + " / " + result.Total + " to:\n" + result.LocalPath,
-                    "Download complete", 5, ToastMessage.Position.BOTTOM_RIGHT);
+                var result = (WorkerResult) e.Result;
+                /*ToastMessage.Show("Downloaded " + result.Downloaded + " / " + result.Total + " to:\n" + result.LocalPath,
+                    "Download complete", 5, ToastMessage.Position.BOTTOM_RIGHT);*/
+                ToastMessage.ShowDownloadComplete(result.LocalPath, result.Downloaded, result.Total);
             }
         }
 

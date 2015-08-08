@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +29,12 @@ namespace Se.Creotec.WPFToastMessage
 
         private DispatcherTimer timer = new DispatcherTimer();
 
+        private string path;
+        private int completed;
+        private int max;
+
+        private bool downloadToast = false;
+
         public enum Position
         {
             TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
@@ -45,16 +54,40 @@ namespace Se.Creotec.WPFToastMessage
         public ToastMessage(String message, String title, int delay, ToastMessage.Position position)
         {
             InitializeComponent();
-            timer.Tick += new EventHandler(closeToast);
 
             textToastMessage.Text = message;
             labelToastTitle.Content = title;
-            timer.Interval = new TimeSpan(0, 0, delay);
             setPosition(position);
 
+            downloadToast = false;
+
+            SetupTimer(delay);
+        }
+
+        public ToastMessage(string path, int completed, int max)
+        {
+            InitializeComponent();
+            downloadToast = true;
+
+            textToastMessage.Text = "Downloaded " + completed + "/" + max + " files to:\n" + path;
+            labelToastTitle.Content = "Download complete";
+            setPosition(Position.BOTTOM_RIGHT);
+
+            this.path = path;
+            this.completed = completed;
+            this.max = max;
+
+            SetupTimer(5);
+        }
+
+        #endregion
+
+        private void SetupTimer(int delay)
+        {
+            timer.Tick += closeToast;
+            timer.Interval = new TimeSpan(0, 0, delay);
             timer.Start();
         }
-        #endregion
 
         /// <summary>
         /// Display a toast message for a defined amount of time
@@ -66,6 +99,11 @@ namespace Se.Creotec.WPFToastMessage
         public static void Show(String message, String title, int delay, Position position)
         {
             new ToastMessage(message, title, delay, position).Show();
+        }
+
+        public static void ShowDownloadComplete(string path, int completed, int max)
+        {
+            new ToastMessage(path, completed, max).Show();
         }
 
         /// <summary>
@@ -118,6 +156,19 @@ namespace Se.Creotec.WPFToastMessage
         private void buttonToastClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (downloadToast)
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                Process.Start(path);
+            }
         }
     }
 }
