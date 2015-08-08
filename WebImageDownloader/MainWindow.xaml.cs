@@ -255,9 +255,8 @@ namespace WebImageDownloader
             else
             {
                 var result = (WorkerResult) e.Result;
-                /*ToastMessage.Show("Downloaded " + result.Downloaded + " / " + result.Total + " to:\n" + result.LocalPath,
-                    "Download complete", 5, ToastMessage.Position.BOTTOM_RIGHT);*/
-                ToastMessage.ShowDownloadComplete(result.LocalPath, result.Downloaded, result.Total);
+                ToastMessage.Show("Downloaded " + result.Downloaded + " / " + result.Total + " to:\n" + result.LocalPath,
+                    "Download complete", 5, ToastMessage.Position.BOTTOM_RIGHT, new DownloadCompleteAction(result.LocalPath));
             }
         }
 

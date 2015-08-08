@@ -27,13 +27,11 @@ namespace Se.Creotec.WPFToastMessage
         private const String DEFAULT_TITLE = "Notification";
         private const ToastMessage.Position DEFAULT_POS = ToastMessage.Position.TOP_RIGHT;
 
-        private DispatcherTimer timer = new DispatcherTimer();
+        private readonly DispatcherTimer _timer = new DispatcherTimer();
 
-        private string path;
-        private int completed;
-        private int max;
+        private readonly string _path;
 
-        private bool downloadToast = false;
+        private readonly IToastAction _action;
 
         public enum Position
         {
@@ -52,6 +50,9 @@ namespace Se.Creotec.WPFToastMessage
             : this(message, title, delay, DEFAULT_POS) {}
 
         public ToastMessage(String message, String title, int delay, ToastMessage.Position position)
+            : this(message, title, delay, position, null) {}
+
+        public ToastMessage(string message, string title, int delay, Position position, IToastAction action)
         {
             InitializeComponent();
 
@@ -59,34 +60,17 @@ namespace Se.Creotec.WPFToastMessage
             labelToastTitle.Content = title;
             setPosition(position);
 
-            downloadToast = false;
+            _action = action;
 
             SetupTimer(delay);
         }
-
-        public ToastMessage(string path, int completed, int max)
-        {
-            InitializeComponent();
-            downloadToast = true;
-
-            textToastMessage.Text = "Downloaded " + completed + "/" + max + " files to:\n" + path;
-            labelToastTitle.Content = "Download complete";
-            setPosition(Position.BOTTOM_RIGHT);
-
-            this.path = path;
-            this.completed = completed;
-            this.max = max;
-
-            SetupTimer(5);
-        }
-
         #endregion
 
         private void SetupTimer(int delay)
         {
-            timer.Tick += closeToast;
-            timer.Interval = new TimeSpan(0, 0, delay);
-            timer.Start();
+            _timer.Tick += closeToast;
+            _timer.Interval = new TimeSpan(0, 0, delay);
+            _timer.Start();
         }
 
         /// <summary>
@@ -101,9 +85,10 @@ namespace Se.Creotec.WPFToastMessage
             new ToastMessage(message, title, delay, position).Show();
         }
 
-        public static void ShowDownloadComplete(string path, int completed, int max)
+        public static void Show(string message, string title, int delay, Position position,
+            IToastAction action)
         {
-            new ToastMessage(path, completed, max).Show();
+            new ToastMessage(message, title, delay, position, action).Show();
         }
 
         /// <summary>
@@ -139,13 +124,13 @@ namespace Se.Creotec.WPFToastMessage
         private void Window_MouseEnter(object sender, MouseEventArgs e)
         {
             // Pauses the timer when the user hover over the toast
-            timer.Stop();
+            _timer.Stop();
         }
 
         private void Window_MouseLeave(object sender, MouseEventArgs e)
         {
             // Resumes the timer when the mouse leaves
-            timer.Start();
+            _timer.Start();
         }        
 
         private void closeToast(object sender, EventArgs e)
@@ -158,17 +143,15 @@ namespace Se.Creotec.WPFToastMessage
             this.Close();
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TriggerToastAction(object sender, MouseButtonEventArgs e)
         {
-            if (downloadToast)
-            {
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
+            _action?.DoToastAction();
+        }
 
-                Process.Start(path);
-            }
+
+        public interface IToastAction
+        {
+            void DoToastAction();
         }
     }
 }
