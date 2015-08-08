@@ -4,7 +4,7 @@
         Title="Toast" Height="117.5" Width="331" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" WindowStyle="None" BorderThickness="1" BorderBrush="#FFC3C3C3" MouseEnter="Window_MouseEnter" MouseLeave="Window_MouseLeave" MouseLeftButtonDown="TriggerToastAction">
     <Grid MouseLeftButtonDown="TriggerToastAction">
         <Label x:Name="labelToastTitle" Content="Toast Title" Margin="10,10,46,0" VerticalAlignment="Top" FontSize="20" Padding="0,5,5,5" MouseLeftButtonDown="TriggerToastAction"/>
-        <TextBox x:Name="textToastMessage" Margin="10,46,11,9.5" TextWrapping="Wrap" Text="Toast message" IsTabStop="False" IsReadOnly="True" BorderBrush="{x:Null}" SelectionBrush="{x:Null}" BorderThickness="0" MouseLeftButtonDown="TriggerToastAction"/>
+        <TextBox x:Name="textToastMessage" Margin="10,46,11,9.5" TextWrapping="Wrap" Text="Toast message" IsTabStop="False" IsReadOnly="True" BorderBrush="{x:Null}" SelectionBrush="{x:Null}" BorderThickness="0" MouseLeftButtonDown="TriggerToastAction" PreviewMouseUp="TriggerToastAction" Cursor="Hand"/>
         <Button x:Name="buttonToastClose" Content="r" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" BorderBrush="{x:Null}" Height="30" FontSize="16" ToolTip="Close" FontFamily="Webdings" Click="buttonToastClose_Click" BorderThickness="0">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
